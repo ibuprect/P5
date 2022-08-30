@@ -55,12 +55,12 @@ function createProductDescription(description) {
 }
 
 /* implémentation des couleurs */
-function createProductColors(colors) {
+function createProductColors(color) {
   const productColors = document.getElementById("colors");
-  for ( i = 0; i <= colors - 1; i++) {
+  for ( i = 0; i <= color - 1; i++) {
     const options = document.createElement("option");
-    options.value = colors[`${i}`];
-    options.innerHTML = colors[`${i}`];
+    options.value = color[`${i}`];
+    options.innerHTML = color[`${i}`];
     productColors.appendChild(options);
   }
 }
@@ -89,6 +89,7 @@ function allSelectedOptions() {
     addToCart(quantityChoose, colorSelected);
   }
 }
+
 /* création de l'ajout a la carte */
 const addToCart = async (quantity, color) => {
   let panier = JSON.parse(localStorage.getItem("panier"));
