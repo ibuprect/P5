@@ -15,18 +15,17 @@ function retrieveProductData() {
 /* Implémentation des "datas" pour chaques items */
 
 function implementData(data) {
-  for (let item = 0; item < data.length; item++) {
-    if (data[item]) {
-      ITEMS.appendChild(createItem(data[item]));
+  for (let i in data) {
+    const product = data[i];
+      ITEMS.appendChild(createItem(product));
     }
-  }
+  
 }
 
 /* Création d'une fonction pour la création de chaques produits */
 function createItem(data) {
   const articleProduct = createArticleProduct(data);
   const finalProduct = createLinkToProduct(data._id, articleProduct);
-
   return finalProduct;
 }
 

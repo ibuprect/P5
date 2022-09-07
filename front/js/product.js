@@ -1,7 +1,7 @@
 /* Récupération de toutes les données de l'API */ 
 
 const url = new URL(window.location.href);
-const id = url.searchParams.get("_id");
+const id = url.searchParams.get("id");
 
 async function retrieveProductData() {
   return (await fetch(`http://localhost:3000/api/products/${id}`)).json();
@@ -21,12 +21,13 @@ const createProductItem = async () => {
   createProductTitle(product.name);
   createProductDescription(product.description);
   createProductPrice(product.price);
+  createProductColors(product.colors);
 };
 
 /* Implementation de l'image */
 function createProductImg(image, altText) {
   const productItem = document.getElementsByClassName("item__img")[0];
-  const productImg = document.createElement("imageUrl");
+  const productImg = document.createElement("img");
   productImg.src = image;
   productImg.alt = altText;
 
@@ -53,6 +54,16 @@ function createProductDescription(description) {
   productDescription.innerText = description;
 }
 
+/* implémentation des couleurs */
+function createProductColors(color) {
+  const productColors = document.getElementById("colors");
+  for ( i = 0; i < color.length; i++) {
+    const options = document.createElement("option");
+    options.value = color[`${i}`];
+    options.innerHTML = color[`${i}`];
+    productColors.appendChild(options);
+  }
+}
 
 function verifyCompatibility() {
   if (localStorage) {
@@ -63,6 +74,22 @@ function verifyCompatibility() {
     );
   }
 }
+
+
+/*vérification que tout les champs ont été remplis*/
+function allSelectedOptions() {
+  const quantityChoose = parseInt(
+    document.getElementById("quantity").value
+  );
+  const colors = document.getElementById("colors");
+  const colorSelected = colors.options[colors.selectedIndex].value;
+  if (colorSelected == "" || quantityChoose == 0) {
+    console.error("Tous les champs sont obligatoires");
+  } else {
+    addToCart(quantityChoose, colorSelected);
+  }
+}
+
 /* création de l'ajout a la carte */
 const addToCart = async (quantity, color) => {
   let panier = JSON.parse(localStorage.getItem("panier"));
