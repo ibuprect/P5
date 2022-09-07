@@ -59,9 +59,7 @@ function showTitleProduct(div, title) {
   div.appendChild(titleItem);
 }
 
-/*
- * Display the chosen colour for the selected product
- */
+/* Montre la couleur choisie du produit */
 function showColorProduct(div, color) {
   const colorItem = document.createElement("p");
   colorItem.innerText = color;
@@ -188,7 +186,8 @@ function showErrorMsg(errorId, nameField) {
 
 const globalRegex = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
 
-/* Checks that the form field "first name" matches the defined regex */
+/* vérifie que les informations sont correctes */
+
 function verifyFirstName(prenom) {
   let fieldIsCorrect = false;
   if (globalRegex.test(prenom)) {
@@ -198,3 +197,100 @@ function verifyFirstName(prenom) {
   }
   return fieldIsCorrect;
 }
+
+function verifyLastName(nom) {
+  let fieldIsCorrect = false;
+  if (globalRegex.test(nom)) {
+    fieldIsCorrect = true;
+  } else {
+    showErrorMsg("lastNameErrorMsg", "Nom");
+  }
+  return fieldIsCorrect;
+}
+
+function verifyCity(ville) {
+  let fieldIsCorrect = false;
+  if (globalRegex.test(ville)) {
+    fieldIsCorrect = true;
+  } else {
+    showErrorMsg("cityErrorMsg", "Ville");
+  }
+  return fieldIsCorrect;
+}
+
+/* Envoie une requete a l'api avec les informations et confirme */
+function sendRequestToApi(body) {
+  fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => {
+      if (response.status == 201) {
+        return response.json();
+      } else {
+        console.error("une erreur est survenue lors de la commande");
+      }
+    })
+    .then((order) => {
+      localStorage.clear();
+      id = order.orderId;
+      window.location.href = `confirmation.html?id=${id}`;
+    });
+}
+
+/* Ecoute le bouton envoie et vérifie puis confirme */
+addEventListener("submit", function (e) {
+  e.preventDefault();
+  let prenom = e.target.firstName.value;
+  let nom = e.target.lastName.value;
+  let adresse = e.target.address.value;
+  let ville = e.target.city.value;
+  let email = e.target.email.value;
+  if (
+    verifyFirstName(prenom) &&
+    verifyLastName(nom) &&
+    verifyAddress(adresse) &&
+    verifyCity(ville) &&
+    verifyEmail(email)
+  ) {
+    sendRequestToApi(createBodyRequest(prenom, nom, adresse, ville, email));
+  } else {
+    console.error("Tous les champs ne sont pas correctement remplis");
+  }
+});
+
+/* Crée "send" dans le body de la requete */
+function createBodyRequest(prenom, nom, adresse, ville, mail) {
+  let idProducts = [];
+  for (let i = 0; i < dataStorage.length; i++) {
+    idProducts.push(dataStorage[i].id);
+  }
+  const bodyContent = {
+    contact: {
+      firstName: prenom,
+      lastName: nom,
+      address: adresse,
+      city: ville,
+      email: mail,
+    },
+    products: idProducts,
+  };
+  return bodyContent;
+}
+
+
+
+
+function displayProducts() {
+  if (localStorage.length != 0) {
+    for (let i = 0; i <= dataStorage.length - 1; i++) {
+      createCardProduct(dataStorage[i]);
+    }
+  }
+  totalRefresh();
+}
+
+displayProducts();

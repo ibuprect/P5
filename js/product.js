@@ -57,7 +57,7 @@ function createProductDescription(description) {
 /* implémentation des couleurs */
 function createProductColors(color) {
   const productColors = document.getElementById("colors");
-  for ( i = 0; i <= color - 1; i++) {
+  for ( i = 0; i < color.length; i++) {
     const options = document.createElement("option");
     options.value = color[`${i}`];
     options.innerHTML = color[`${i}`];
