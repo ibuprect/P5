@@ -1,11 +1,11 @@
-/* récupération de localStorage */
+// récupération de localStorage //
 const dataStorage = JSON.parse(localStorage.getItem("panier"));
-
+ 
 /* récupération de  productdata depuis l'api */
 async function retrieveProductData(id) {
   return (await fetch(`http://localhost:3000/api/products/${id}`)).json();
 }
-
+ 
 /* appel une fonction pour recupérer les informations produit
    Erreur dans la console quand la récupération est impossible*/
 const getProductData = async (id) => {
@@ -15,8 +15,8 @@ const getProductData = async (id) => {
     console.error("Erreur lors de la récupération des données du produit");
   }
 };
-
-/* Création de l'article qui contien le produit choisi */
+ 
+// Création de l'article qui contien le produit choisi //
 const createCardProduct = async (data) => {
   const product = await retrieveProductData(data.id);
   const cardItem = document.getElementById("cart__items");
@@ -29,13 +29,13 @@ const createCardProduct = async (data) => {
   showInfosItem(articleItem, product.name, data.color, product.price);
   showSettingsItem(articleItem, data.quantity);
 };
-
+ 
 function showInfosItem(articleItem, productName, dataColor, productPrice) {
-
+ 
 }
-
-
-
+ 
+ 
+ 
 // créé les modifications sur le produit //
 function showSettingsItem(container, quantity) {
   const settingsItem = document.createElement("div");
@@ -45,45 +45,56 @@ function showSettingsItem(container, quantity) {
   showDeletedProduct(settingsItem);
 }
 
+// crée la partie information de la page produit //
+function showInfosItem(container, name, color, price) {
+  const infosItem = document.createElement("div");
+  infosItem.setAttribute("class", "cart__item__content");
+  container.appendChild(infosItem);
+  const descriptionItem = document.createElement("div");
+  descriptionItem.setAttribute("class", "cart__item__content__description");
+  infosItem.appendChild(descriptionItem);
+  showTitleProduct(descriptionItem, name);
+  showColorProduct(descriptionItem, color);
+  showPriceProduct(descriptionItem, price);
+}
+ 
 // Montre l'image du produit choisi //
 function showImageProduct(container, altTxt, image) {
   const itemImg = document.createElement("div");
   itemImg.setAttribute("class", "cart__item__img");
   container.appendChild(itemImg);
-
+ 
   const img = document.createElement("img");
   img.setAttribute("src", image);
   img.setAttribute("alt", altTxt);
   itemImg.appendChild(img);
 }
-
+ 
 // Donne le nom du produit //
 function showTitleProduct(div, title) {
   const titleItem = document.createElement("h2");
   titleItem.innerText = title;
-
+ 
   div.appendChild(titleItem);
 }
-
+ 
 // Montre la couleur choisie du produit //
 function showColorProduct(div, color) {
   const colorItem = document.createElement("p");
   colorItem.innerText = color;
-
+ 
   div.appendChild(colorItem);
-
-  console.log("div value = " + div);
-  console.log("color value = " + color);
+ 
 }
-
+ 
 // Donne le prix du produit selectionné //
 function showPriceProduct(div, price) {
   const priceItem = document.createElement("p");
   priceItem.innerText = price + "€";
-
+ 
   div.appendChild(priceItem);
 }
-
+ 
 // Affiche le bouton pour la quantité de produits //
 function showQuantityProduct(div, quantity) {
   const settingsQuantity = document.createElement("div");
@@ -92,11 +103,11 @@ function showQuantityProduct(div, quantity) {
     "cart__item__content__settings__quantity"
   );
   div.appendChild(settingsQuantity);
-
+ 
   const quantityItem = document.createElement("p");
   quantityItem.innerText = "Qté :";
   settingsQuantity.appendChild(quantityItem);
-
+ 
   const quantityInput = document.createElement("input");
   quantityInput.setAttribute("type", "number");
   quantityInput.setAttribute("class", "itemQuantity");
@@ -106,7 +117,7 @@ function showQuantityProduct(div, quantity) {
   quantityInput.setAttribute("value", `${quantity}`);
   settingsQuantity.appendChild(quantityInput);
 }
-
+ 
 // Bouton de suppresssion du produit //
 function showDeletedProduct(div) {
   const settingsDeleted = document.createElement("div");
@@ -115,13 +126,13 @@ function showDeletedProduct(div) {
     "cart__item__content__settings__delete"
   );
   div.appendChild(settingsDeleted);
-
+ 
   const deletedProduct = document.createElement("p");
   deletedProduct.setAttribute("class", "deleteItem");
   deletedProduct.innerText = "Supprimer";
   settingsDeleted.appendChild(deletedProduct);
 }
-
+ 
 addEventListener("input", function () {
   let quantitySelector = document.getElementsByClassName("itemQuantity");
   for (let i = 0; i < quantitySelector.length; i++) {
@@ -145,10 +156,10 @@ addEventListener("input", function () {
     });
   }
 });
-
-
+ 
+ 
 // Des que l'on clique sur le bouton supprimer le produit est enlevé //
-
+ 
 window.onload = () => {
   let productDeleted = document.getElementsByClassName("deleteItem");
   for (let i = 0; i < productDeleted.length; i++) {
@@ -168,7 +179,7 @@ window.onload = () => {
     });
   }
 };
-
+ 
 // Montre le total d'article et le prix //
 const totalRefresh = async () => {
   let totalCartPrice = 0;
@@ -187,17 +198,17 @@ const totalRefresh = async () => {
   const totalPrice = document.getElementById("totalPrice");
   totalPrice.innerText = totalCartPrice;
 };
-
+ 
 // Affiche un message d'erreur si il y a une erreyr dans le for //
 function showErrorMsg(errorId, nameField) {
   let errorContainer = document.getElementById(`${errorId}`);
   errorContainer.innerHTML = `${nameField} est invalide`;
 }
-
+ 
 const globalRegex = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
-
+ 
 // vérifie que les informations sont correctes //
-
+ 
 function verifyFirstName(prenom) {
   let fieldIsCorrect = false;
   if (globalRegex.test(prenom)) {
@@ -207,7 +218,7 @@ function verifyFirstName(prenom) {
   }
   return fieldIsCorrect;
 }
-
+ 
 function verifyLastName(nom) {
   let fieldIsCorrect = false;
   if (globalRegex.test(nom)) {
@@ -217,7 +228,7 @@ function verifyLastName(nom) {
   }
   return fieldIsCorrect;
 }
-
+ 
 function verifyCity(ville) {
   let fieldIsCorrect = false;
   if (globalRegex.test(ville)) {
@@ -227,7 +238,7 @@ function verifyCity(ville) {
   }
   return fieldIsCorrect;
 }
-
+ 
 // Envoie une requete a l'api avec les informations et confirme //
 function sendRequestToApi(body) {
   fetch("http://localhost:3000/api/products/order", {
@@ -250,7 +261,7 @@ function sendRequestToApi(body) {
       window.location.href = `confirmation.html?id=${id}`;
     });
 }
-
+ 
 // Ecoute le bouton envoie et vérifie puis confirme //
 addEventListener("submit", function (e) {
   e.preventDefault();
@@ -271,7 +282,7 @@ addEventListener("submit", function (e) {
     console.error("Tous les champs ne sont pas correctement remplis");
   }
 });
-
+ 
 // Crée "send" dans le body de la requete //
 function createBodyRequest(prenom, nom, adresse, ville, mail) {
   let idProducts = [];
@@ -290,10 +301,10 @@ function createBodyRequest(prenom, nom, adresse, ville, mail) {
   };
   return bodyContent;
 }
-
-
-
-
+ 
+ 
+ 
+ 
 function displayProducts() {
   if (localStorage.length != 0) {
     for (let i = 0; i <= dataStorage.length - 1; i++) {
@@ -302,5 +313,5 @@ function displayProducts() {
   }
   totalRefresh();
 }
-
+ 
 displayProducts();
