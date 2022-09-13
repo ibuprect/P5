@@ -30,7 +30,13 @@ const createCardProduct = async (data) => {
   showSettingsItem(articleItem, data.quantity);
 };
 
-/* créé les modifications sur le produit */
+function showInfosItem(articleItem, productName, dataColor, productPrice) {
+
+}
+
+
+
+// créé les modifications sur le produit //
 function showSettingsItem(container, quantity) {
   const settingsItem = document.createElement("div");
   settingsItem.setAttribute("class", "cart__item__settings");
@@ -39,7 +45,7 @@ function showSettingsItem(container, quantity) {
   showDeletedProduct(settingsItem);
 }
 
-/* Montre l'image du produit choisi */
+// Montre l'image du produit choisi //
 function showImageProduct(container, altTxt, image) {
   const itemImg = document.createElement("div");
   itemImg.setAttribute("class", "cart__item__img");
@@ -51,7 +57,7 @@ function showImageProduct(container, altTxt, image) {
   itemImg.appendChild(img);
 }
 
-/* Donne le nom du produit */
+// Donne le nom du produit //
 function showTitleProduct(div, title) {
   const titleItem = document.createElement("h2");
   titleItem.innerText = title;
@@ -59,15 +65,18 @@ function showTitleProduct(div, title) {
   div.appendChild(titleItem);
 }
 
-/* Montre la couleur choisie du produit */
+// Montre la couleur choisie du produit //
 function showColorProduct(div, color) {
   const colorItem = document.createElement("p");
   colorItem.innerText = color;
 
   div.appendChild(colorItem);
+
+  console.log("div value = " + div);
+  console.log("color value = " + color);
 }
 
-/* Donne le prix du produit selectionné */
+// Donne le prix du produit selectionné //
 function showPriceProduct(div, price) {
   const priceItem = document.createElement("p");
   priceItem.innerText = price + "€";
@@ -75,7 +84,7 @@ function showPriceProduct(div, price) {
   div.appendChild(priceItem);
 }
 
-/* Choix de la quantité produit */
+// Affiche le bouton pour la quantité de produits //
 function showQuantityProduct(div, quantity) {
   const settingsQuantity = document.createElement("div");
   settingsQuantity.setAttribute(
@@ -98,7 +107,7 @@ function showQuantityProduct(div, quantity) {
   settingsQuantity.appendChild(quantityInput);
 }
 
-/* Bouton de suppresssion du produit */
+// Bouton de suppresssion du produit //
 function showDeletedProduct(div) {
   const settingsDeleted = document.createElement("div");
   settingsDeleted.setAttribute(
@@ -138,7 +147,8 @@ addEventListener("input", function () {
 });
 
 
-/* Des que l'on clique sur le bouton supprimer le produit est enlevé */
+// Des que l'on clique sur le bouton supprimer le produit est enlevé //
+
 window.onload = () => {
   let productDeleted = document.getElementsByClassName("deleteItem");
   for (let i = 0; i < productDeleted.length; i++) {
@@ -159,7 +169,7 @@ window.onload = () => {
   }
 };
 
-/* Montre le total d'article et le prix */
+// Montre le total d'article et le prix //
 const totalRefresh = async () => {
   let totalCartPrice = 0;
   let totalCartQty = 0;
@@ -178,7 +188,7 @@ const totalRefresh = async () => {
   totalPrice.innerText = totalCartPrice;
 };
 
-/* Affiche un message d'erreur si il y a une erreyr dans le for */
+// Affiche un message d'erreur si il y a une erreyr dans le for //
 function showErrorMsg(errorId, nameField) {
   let errorContainer = document.getElementById(`${errorId}`);
   errorContainer.innerHTML = `${nameField} est invalide`;
@@ -186,7 +196,7 @@ function showErrorMsg(errorId, nameField) {
 
 const globalRegex = new RegExp("^[A-Za-zéèêëàâîïôöûü-]+$");
 
-/* vérifie que les informations sont correctes */
+// vérifie que les informations sont correctes //
 
 function verifyFirstName(prenom) {
   let fieldIsCorrect = false;
@@ -218,7 +228,7 @@ function verifyCity(ville) {
   return fieldIsCorrect;
 }
 
-/* Envoie une requete a l'api avec les informations et confirme */
+// Envoie une requete a l'api avec les informations et confirme //
 function sendRequestToApi(body) {
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
@@ -241,7 +251,7 @@ function sendRequestToApi(body) {
     });
 }
 
-/* Ecoute le bouton envoie et vérifie puis confirme */
+// Ecoute le bouton envoie et vérifie puis confirme //
 addEventListener("submit", function (e) {
   e.preventDefault();
   let prenom = e.target.firstName.value;
@@ -262,7 +272,7 @@ addEventListener("submit", function (e) {
   }
 });
 
-/* Crée "send" dans le body de la requete */
+// Crée "send" dans le body de la requete //
 function createBodyRequest(prenom, nom, adresse, ville, mail) {
   let idProducts = [];
   for (let i = 0; i < dataStorage.length; i++) {
