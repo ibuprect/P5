@@ -228,6 +228,19 @@ function verifyLastName(nom) {
   }
   return fieldIsCorrect;
 }
+
+function verifyAddress(adresse) {
+  let fieldIsCorrect = false;
+  const adresseRegex = new RegExp(
+    "([0-9]*)?([a-zA-Z]*)"
+  );
+  if (adresseRegex.test(adresse)) {
+    fieldIsCorrect = true;
+  } else {
+    showErrorMsg("addressErrorMsg", "Adresse");
+  }
+  return fieldIsCorrect;
+}
  
 function verifyCity(ville) {
   let fieldIsCorrect = false;
@@ -235,6 +248,20 @@ function verifyCity(ville) {
     fieldIsCorrect = true;
   } else {
     showErrorMsg("cityErrorMsg", "Ville");
+  }
+  return fieldIsCorrect;
+}
+
+function verifyEmail(email) {
+  let fieldIsCorrect = false;
+  if (
+    email.match(
+      /[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,24}/
+    )
+  ) {
+    fieldIsCorrect = true;
+  } else {
+    showErrorMsg("emailErrorMsg", "Email");
   }
   return fieldIsCorrect;
 }
